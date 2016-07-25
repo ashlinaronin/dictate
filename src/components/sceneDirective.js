@@ -9,13 +9,13 @@
             '$q', 'CameraService', 'PhotosphereService',
             'RendererService', 'WebcamService', 'AsteroidsService',
 			'LightsService', 'SpheresService', 'HeadService',
-			'StarsService', 'SynthPadService'
+			'StarsService', 'SynthPadService', 'TextTextureService'
         ];
 
         function sceneDirective($q, CameraService, PhotosphereService,
                     RendererService, WebcamService, AsteroidsService,
 					LightsService, SpheresService, HeadService,
-					StarsService, SynthPadService) {
+					StarsService, SynthPadService, TextTextureService) {
 
             var directive = {
                 link: link,
@@ -36,6 +36,7 @@
 					pointLight: LightsService.getPointLight(),
 					ambientLight: LightsService.getAmbientLight(),
                     webcamVideoTexture: WebcamService.getVideoTexture(),
+					textTexture: TextTextureService.getTextTexture(),
 					bigHead: HeadService.getBigHead(),
 					stars: StarsService.getParticles()
                 }).then(function(resolved) {
@@ -50,11 +51,10 @@
 					components.scene.add(components.bigHead);
 					components.scene.add(components.stars);
 
-					addTexturedObject(components.scene, components.bigHead, components.webcamVideoTexture);
+					// addTexturedObject(components.scene, components.bigHead, components.webcamVideoTexture);
+					addTexturedObject(components.scene, components.bigHead, components.textTexture);
 
                     animate();
-
-					// SynthPadService.init();
                 });
             }
 
