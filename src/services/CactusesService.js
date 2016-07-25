@@ -49,7 +49,7 @@
             }
 
             function _createBigCactus(size) {
-                objLoader.load('assets/cactus.obj', function(object) {
+                objLoader.load('assets/young_boy_head.obj', function(object) {
                     object.traverse(function(child) {
                         if (child instanceof THREE.Mesh) {
                             child.material = cactusMaterial;
