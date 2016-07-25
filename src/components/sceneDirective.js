@@ -8,13 +8,13 @@
         sceneDirective.$inject = [
             '$q', 'CameraService', 'PhotosphereService',
             'RendererService', 'WebcamService', 'AsteroidsService',
-			'LightsService', 'SpheresService', 'CactusesService',
+			'LightsService', 'SpheresService', 'HeadService',
 			'StarsService', 'SynthPadService'
         ];
 
         function sceneDirective($q, CameraService, PhotosphereService,
                     RendererService, WebcamService, AsteroidsService,
-					LightsService, SpheresService, CactusesService,
+					LightsService, SpheresService, HeadService,
 					StarsService, SynthPadService) {
 
             var directive = {
@@ -36,21 +36,21 @@
 					pointLight: LightsService.getPointLight(),
 					ambientLight: LightsService.getAmbientLight(),
                     webcamVideoTexture: WebcamService.getVideoTexture(),
-					bigCactus: CactusesService.getOneBigCactus(),
+					bigHead: HeadService.getBigHead(),
 					stars: StarsService.getParticles()
                 }).then(function(resolved) {
                     // Add all the new resolved components to the components object
                     angular.extend(components, resolved);
 
-                    addMouseMoveListener(components.renderer, components.camera, components.bigCactus);
+                    addMouseMoveListener(components.renderer, components.camera, components.bigHead);
 
 					components.scene.add(components.pointLight);
 					components.scene.add(components.ambientLight);
                     components.scene.add(components.camera);
-					components.scene.add(components.bigCactus);
+					components.scene.add(components.bigHead);
 					components.scene.add(components.stars);
 
-					addTexturedObject(components.scene, components.bigCactus, components.webcamVideoTexture);
+					addTexturedObject(components.scene, components.bigHead, components.webcamVideoTexture);
 
                     animate();
 
@@ -72,7 +72,7 @@
                 window.requestAnimationFrame(animate);
                 WebcamService.drawVideoFrame();
 				StarsService.updateParticles();
-				components.bigCactus.rotation.y += 0.005;
+				// components.bigCactus.rotation.y += 0.005;
                 components.renderer.render(components.scene, components.camera);
             }
 
