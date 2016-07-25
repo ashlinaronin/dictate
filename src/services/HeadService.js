@@ -13,7 +13,7 @@
             var bigHeadDeferred = $q.defer();
             var headMaterial = new THREE.MeshBasicMaterial({
             	color: 0xffffff,
-            	side: THREE.BackSide
+            	side: THREE.FrontSide
             });
 
             // Start loading objs as soon as we have a loading manager
@@ -22,19 +22,20 @@
             function _startLoading() {
                 LoadingManagerService.getLoadingManager().then(function(manager) {
                     objLoader = new THREE.OBJLoader(manager);
-                    _createBigHead(160);
+                    _createBigHead();
                 });
             }
 
-            function _createBigHead(size) {
+            function _createBigHead() {
                 objLoader.load('assets/young_boy_head.obj', function(object) {
                     object.traverse(function(child) {
                         if (child instanceof THREE.Mesh) {
                             child.material = headMaterial;
                         }
                     });
-                    object.scale.set(size, size, size);
-                    object.position.set(0, -225, 0);
+
+					object.position.set(3, -6, 0);
+					object.rotation.y = 180 * (Math.PI / 180);
 
                     bigHeadDeferred.resolve(object);
                 });

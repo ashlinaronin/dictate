@@ -42,7 +42,7 @@
                     // Add all the new resolved components to the components object
                     angular.extend(components, resolved);
 
-                    addMouseMoveListener(components.renderer, components.camera, components.bigHead);
+                    // addMouseMoveListener(components.renderer, components.camera, components.bigHead);
 
 					components.scene.add(components.pointLight);
 					components.scene.add(components.ambientLight);
@@ -54,7 +54,7 @@
 
                     animate();
 
-					SynthPadService.init();
+					// SynthPadService.init();
                 });
             }
 
