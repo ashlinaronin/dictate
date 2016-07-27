@@ -68,9 +68,12 @@ gulp.task('dev:main-scripts', function() {
 
 gulp.task('dev:lib-scripts', function(){
     return gulp.src([
+        'lib/modernizr-custom.min.js',
         'node_modules/angular/angular.min.js',
         'lib/three.js',
-        'lib/OBJLoader.js'
+        'lib/OBJLoader.js',
+        'lib/recorder.js',
+        'lib/recorderWorker.js'
     ])
       .pipe($.plumber())
       .pipe($.sourcemaps.init())
