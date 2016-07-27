@@ -9,13 +9,15 @@
             '$q', 'CameraService', 'PhotosphereService',
             'RendererService', 'WebcamService', 'AsteroidsService',
 			'LightsService', 'SpheresService', 'HeadService',
-			'StarsService', 'SynthPadService', 'TextTextureService'
+			'StarsService', 'SynthPadService', 'TextTextureService',
+			'MicrophoneService'
         ];
 
         function sceneDirective($q, CameraService, PhotosphereService,
                     RendererService, WebcamService, AsteroidsService,
 					LightsService, SpheresService, HeadService,
-					StarsService, SynthPadService, TextTextureService) {
+					StarsService, SynthPadService, TextTextureService,
+					MicrophoneService) {
 
             var directive = {
                 link: link,
@@ -55,6 +57,12 @@
 					addTexturedObject(components.scene, components.bigHead, components.textTexture);
 
                     animate();
+
+					MicrophoneService.init();
+					// MicrophoneService.start();
+					MicrophoneService.subscribe(function(recognitionResult) {
+						console.log('result:', recognitionResult);
+					});
                 });
             }
 
