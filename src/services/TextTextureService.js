@@ -5,17 +5,21 @@
         .module('faceworld')
 		.factory('TextTextureService', TextTexture);
 
-        TextTexture.$inject = ['$q'];
+        TextTexture.$inject = ['$q', 'MicrophoneService'];
 
-        function TextTexture($q) {
+        function TextTexture($q, MicrophoneService) {
 
-            var canvas, context;
+            var canvas, context, texture;
             var textureDeferred = $q.defer();
             var canvasDeferred = $q.defer();
 
+			var textOffset = 0;
+
             // @immediate
             _createElements();
-            _writeTexture();
+            _createTexture();
+
+			MicrophoneService.subscribe(_updateTexture);
 
             return {
                 getTextCanvas: _getTextCanvas,
@@ -34,21 +38,18 @@
                 canvas = document.createElement('canvas');
                 context = canvas.getContext('2d');
 
-                canvas.width = 512;
-                canvas.height = 512;
+                canvas.width = 2048;
+                canvas.height = 2048;
             }
 
-            function _writeTexture() {
+            function _createTexture() {
                 context.fillStyle = '#000000';
                 context.fillRect(0, 0, canvas.width, canvas.height);
-                context.font = "64px serif";
-                context.fillStyle = '#ffffff';
-                context.fillText("Hello world", 108, 256);
 
                 angular.element(document.body).append(canvas);
 
                 // save both for now
-                var texture = new THREE.Texture(canvas);
+                texture = new THREE.Texture(canvas);
                 texture.minFilter = THREE.LinearFilter;
                 texture.magFilter = THREE.LinearFilter;
                 texture.needsUpdate = true;
@@ -56,6 +57,27 @@
                 textureDeferred.resolve(texture);
                 canvasDeferred.resolve(canvas);
             }
+
+			function _updateTexture(text) {
+				var textToWrite = text ? text : '';
+
+				if (textOffset * 60 > canvas.height) {
+					textOffset = 0;
+				}
+
+                context.font = "280px serif";
+                context.fillStyle = '#ffffff';
+				var textX = 0;
+				var textY = (textOffset * 60);
+                context.fillText(textToWrite, textX, textY);
+
+				angular.element(document.body).append(canvas);
+
+				texture.image.src = canvas.toDataURL();
+				texture.needsUpdate = true;
+
+				textOffset++;
+			}
 
         }
 

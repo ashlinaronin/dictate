@@ -45,8 +45,6 @@
                     // Add all the new resolved components to the components object
                     angular.extend(components, resolved);
 
-                    // addMouseMoveListener(components.renderer, components.camera, components.bigHead);
-
 					components.scene.add(components.pointLight);
 					components.scene.add(components.ambientLight);
                     components.scene.add(components.camera);
@@ -59,7 +57,6 @@
                     animate();
 
 					MicrophoneService.init();
-					// MicrophoneService.start();
 					MicrophoneService.subscribe(function(recognitionResult) {
 						console.log('result:', recognitionResult);
 					});
@@ -80,7 +77,6 @@
                 window.requestAnimationFrame(animate);
                 WebcamService.drawVideoFrame();
 				StarsService.updateParticles();
-				// components.bigCactus.rotation.y += 0.005;
                 components.renderer.render(components.scene, components.camera);
             }
 

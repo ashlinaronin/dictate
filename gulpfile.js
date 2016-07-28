@@ -69,7 +69,8 @@ gulp.task('dev:main-scripts', function() {
 gulp.task('dev:lib-scripts', function(){
     return gulp.src([
         'lib/modernizr-custom.min.js',
-        'node_modules/angular/angular.min.js',
+        'node_modules/angular/angular.js',
+        'node_modules/gsap/src/uncompressed/TweenMax.js',
         'lib/three.js',
         'lib/OBJLoader.js',
         'lib/recorder.js',

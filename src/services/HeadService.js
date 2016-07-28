@@ -5,9 +5,9 @@
         .module('faceworld')
 		.factory('HeadService', Head);
 
-        Head.$inject = ['$q', 'LoadingManagerService'];
+        Head.$inject = ['$q', 'LoadingManagerService', 'MicrophoneService'];
 
-        function Head($q, LoadingManagerService) {
+        function Head($q, LoadingManagerService, MicrophoneService) {
 
             var objLoader;
             var bigHeadDeferred = $q.defer();
@@ -18,6 +18,8 @@
 
             // Start loading objs as soon as we have a loading manager
             _startLoading();
+
+			MicrophoneService.subscribe(_rotate);
 
             function _startLoading() {
                 LoadingManagerService.getLoadingManager().then(function(manager) {
@@ -34,7 +36,7 @@
                         }
                     });
 
-					object.position.set(3, -6, 0);
+					object.position.set(3, -7, 0);
 					object.rotation.y = 180 * (Math.PI / 180);
 
                     bigHeadDeferred.resolve(object);
@@ -46,6 +48,14 @@
             function _getRandomInt(min, max) {
                 return Math.floor(Math.random() * (max - min + 1)) + min;
             }
+
+			function _rotate(speechResult) {
+				bigHeadDeferred.promise.then(function(head) {
+					var newRotation = head.rotation.y + 0.03;
+					var duration = 0.3;
+					TweenMax.to(head.rotation, duration, {y: newRotation});
+				});
+			}
 
             return {
                 getBigHead: function() {

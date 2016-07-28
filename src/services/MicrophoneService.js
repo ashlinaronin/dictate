@@ -97,7 +97,7 @@
 
                 speechRecognition = new webkitSpeechRecognition();
                 speechRecognition.interimResults = true;
-                speechRecognition.continuous = false;
+                speechRecognition.continuous = true;
                 speechRecognition.lang = 'en-US';
 
                 speechRecognition.onstart = _onRecognitionStart;
@@ -115,16 +115,18 @@
                 var sentence = event.results[sentenceIndex][0].transcript;
 
                 // display interim res ults
-                if (!event.results[sentenceIndex].isFinal) {
-                    recognitionResults.interim = sentence;
+                // if (!event.results[sentenceIndex].isFinal) {
+                //     recognitionResults.interim = sentence;
+                //
+                // } else {
+                //     recognitionResults.final = sentence;
+                //     console.log('final: ' + sentence);
+                //     _publish(sentence);
+                //     recognitionResults.interim = null;
+                //     recognitionResults.final = null;
+                // }
 
-                } else {
-                    recognitionResults.final = sentence;
-                    console.log('final: ' + sentence);
-                    _publish(sentence);
-                    recognitionResults.interim = null;
-                    recognitionResults.final = null;
-                }
+                _publish(sentence);
             }
 
             function _onRecognitionError(error) {
@@ -138,6 +140,9 @@
 
             function _onRecognitionEnd() {
                 recognitionResults.recognizing = false;
+                recorder.stop();
+
+                _start(); // hack to keep recognition going
             }
 
             function _subscribe(callback) {
